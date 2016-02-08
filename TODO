@@ -1,1 +1,11 @@
-Rewrite and clean up. This is a mess (but it works).
+Conversion:
+Rewrite for use as universal exchange backend.
+1) Outbound TX
+  A) Query a out-tx-db for:
+    request timestamp, currency, amount, tx-sender, tx-recipient
+  B) Update out-tx-db with txid, processed flag
+
+2) Inbound TX
+  Write to in-tx-db:
+    tx timestamp, currency, txid, tx-amount, tx-to, tx-from
+
