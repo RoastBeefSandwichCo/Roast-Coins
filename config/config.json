@@ -3,14 +3,40 @@
     "pollIntervalAPI": 1,
     "pollOrListenCoins": "poll",
     "pollOrListenIntervalCoins": 300,
-    streamListenOptions = {
-        trace: false,
-        "streams" : ['ledger'],
-        servers :[
+    "streamListenOptions" : {
+        "trace": false,
+        "streams" : ["ledger"],
+        "servers" :[
             {
-                    host : 's1.ripple.com',
-                    port : 443,
-                    id : 0
+                    "host" : "s1.ripple.com",
+                    "port" : 443,
+                    "id" : 0
             }
         ]
+    },
+    "database" : {
+        "type": "mysql",
+        "postgres": {
+        "database_url": "postgres://localhost:5432/todo"
+        },
+        "mysql": {
+            "database_url":"mysql://user_roastcoins:testing@localhost/db_roastcoins?debug=true")
+            "host": "localhost",
+            "port": 3306,
+            "user": "user_roastcoins",
+            "pass": "testing",
+            "dbName": "db_roastcoins",
+            "debug": true,
+            "ssl": null
+        },
+        "sqlite": "not implemented"
+    },
+    "_comment": {
+    "database.type": "MySQL, PostgreSQL, sqlite3. Only MySQL implemented atm.",
+    "database_url": "is used only with postgres",
+    "mysql settings": "host, port, user, pass, dbName, debug, ssl are used only with MySQL",
+    "not implemented": "ssl"
+    }
 }
+
+
