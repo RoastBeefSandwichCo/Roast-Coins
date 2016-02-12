@@ -16,9 +16,6 @@
     },
     "database" : {
         "type": "mysql",
-        "postgres": {
-        "database_url": "postgres://localhost:5432/todo"
-        },
         "mysql": {
             "database_url":"mysql://user_roastcoins:testing@localhost/db_roastcoins?debug=true")
             "host": "localhost",
@@ -29,12 +26,11 @@
             "debug": true,
             "ssl": null
         },
-        "sqlite": "not implemented"
+        "postgres": "to be implemented",
+        "sqlite": "to be implemented"
     },
     "_comment": {
     "database.type": "MySQL, PostgreSQL, sqlite3. Only MySQL implemented atm.",
-    "database_url": "is used only with postgres",
-    "mysql settings": "host, port, user, pass, dbName, debug, ssl are used only with MySQL",
     "not implemented": "ssl"
     }
 }
