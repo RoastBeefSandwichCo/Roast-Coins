@@ -47,7 +47,9 @@ Run this tests with mocha
 
 ## TODO:
  - List unsupported coins, extend to crypto 2.0 apis.
- - Addresses should really [only be used once](https://en.bitcoin.it/wiki/Address). Let's find a way to do that. 
+ - Addresses should really [only be used once](https://en.bitcoin.it/wiki/Address). Let's find a way to do that.
+ - Installation documentation (mysql create db, roles)
+ 
 ##CAVEAT:
  - Ninobrooks is a javascript noob and makes no pretense that his code is elegant or purdy. He in fact welcomes (begs) others to clean it up and improve it. The only reason he's doing this in the first place is because far more talented people have had more pressing matters to attend to. Also, he's going to stop talking about himself in the third person.
 
