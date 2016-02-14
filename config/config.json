@@ -17,12 +17,12 @@
     "database" : {
         "type": "mysql",
         "mysql": {
-            "database_url":"mysql://user_roastcoins:testing@localhost/db_roastcoins?debug=true")
+            "database_url":"mysql://roast_coins:testing@localhost/roast_coins?debug=true")
             "host": "localhost",
             "port": 3306,
-            "user": "user_roastcoins",
-            "pass": "testing",
-            "dbName": "db_roastcoins",
+            "user": "roast_coins",
+            "password": "testing",
+            "database": "roast_coins",
             "debug": true,
             "ssl": null
         },

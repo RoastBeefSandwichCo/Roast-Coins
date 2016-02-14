@@ -15,7 +15,7 @@ A partial rewrite and significant enhancement set over [Ripple-Coins](https://gi
 2. [A cryptocurrency daemon](https://github.com/dogecoin/dogecoin)(local or remote)
   - These modules aim to be crypto-agnostic, so any daemon with (the de facto standard) bitcoin-compatible RPC calls (sendtoaddress, sendfromaccount...) should do.
 
-3. [Gatewayd](https://github.com/ripple/gatewayd) - OPTIONAL and broken
+3. [Gatewayd](https://github.com/ripple/gatewayd) - OPTIONAL and atm BROKEN
   - Provides easy deposit and withdrawal management (and endpoints in Ripple REST)
   - Provides [Node.js](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager), [Ripple REST API](https://github.com/ripple/ripple-rest.git)
 
@@ -47,7 +47,7 @@ Run this tests with mocha
 
 ## TODO:
  - List unsupported coins, extend to crypto 2.0 apis.
-
+ - Addresses should really [only be used once](https://en.bitcoin.it/wiki/Address). Let's find a way to do that. 
 ##CAVEAT:
  - Ninobrooks is a javascript noob and makes no pretense that his code is elegant or purdy. He in fact welcomes (begs) others to clean it up and improve it. The only reason he's doing this in the first place is because far more talented people have had more pressing matters to attend to. Also, he's going to stop talking about himself in the third person.
 
