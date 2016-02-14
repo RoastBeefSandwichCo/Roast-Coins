@@ -26,31 +26,52 @@ var mysqlConnection = function(){
       console.log('connected as id ' + connection.threadId);
     });
 return connection;
-}
+};
 
 var createAddressTable = function(){
 
-//Primary key IDs auto increment as an integer and are not null.
 //CREATE if not exists DATABASE Roast_Coins
-//CREATE if NOT EXISTS table accountCoinAddresses (id autoincrement not null int, ripple NOT NULL varchar(60) )
+    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS accounts_coin_addresses (id AUTOINCREMENT NOT NULL INT, timestamp NOT NULL INT,'
+    + ' crypto_symbol NOT NULL VARCHAR, crypto_address NOT NULL VARCHAR, external_address VARCHAR);';
+    var query = connection.query( queryCreateTable, function (error, results)
+                                 {
+                                    if (err) {
+                                         console.log('MYSQL ERR:', error, '\nMYSQL RES:', results)
+                                         return 'error';
+                                     }
+                                     else {
+                                     console.log('results:', results, '\n query.sql:', query.sql);
+                                         //call debugOutput function
+                                     return true;
+                                     }
+                                    // error will be an Error if one occurred during the query
+                                    // results will contain the results of the query
+                                    // fields will contain information about the returned results fields (if any)
+                                });
 
-    } //#FIXME finish me
+};
 
-var recordNewAddress = function(cryptoAddress, cryptoSymbol, externalAddress, timestamp){
+var recordNewAddress = function( cryptoAddress, cryptoSymbol, externalAddress, timestamp){
     var post =  {"timestamp": timestamp, "cryptoSymbol": cryptoSymbol, "cryptoAddress": cryptoAddress, "externalAddress": externalAddress};
     var connection = database.connectTo('roast_coins');
-    var query = connection.query('INSERT INTO external_account_crypto_pairs SET ?', post, function(err, result){
-        if (err) {
-            console.log('MYSQL ERR:', err, '\nMYSQL RES:', result)
-            return 'error';
-        }
-        else {
-        console.log(query.sql);
-        //call debugOutput function
-        return true;
-        }
-    });
-}
+    var query = connection.query( 'INSERT INTO external_account_crypto_pairs (timestamp, cryptoSymbol, cryptoAddress, externalAddress)'
+                                 + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAddress]
+                                 , function (error, results)
+                                 {
+                                    if (err) {
+                                         console.log('MYSQL ERR:', error, '\nMYSQL RES:', results)
+                                         return 'error';
+                                     }
+                                     else {
+                                     console.log('results:', results, '\n query.sql:', query.sql);
+                                         //call debugOutput function
+                                     return true;
+                                     }
+                                    // error will be an Error if one occurred during the query
+                                    // results will contain the results of the query
+                                    // fields will contain information about the returned results fields (if any)
+                                });
+};
 
 
 
