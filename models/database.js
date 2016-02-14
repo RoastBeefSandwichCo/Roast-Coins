@@ -29,14 +29,15 @@ return connection;
 }
 
 var createAddressTable = function(){
+
 //Primary key IDs auto increment as an integer and are not null.
 //CREATE if not exists DATABASE Roast_Coins
 //CREATE if NOT EXISTS table accountCoinAddresses (id autoincrement not null int, ripple NOT NULL varchar(60) )
 
     } //#FIXME finish me
 
-var recordNewAddress = function(cryptoAddress, cryptoSymbol, timestamp){
-    var post =  {"timestamp": timestamp, "cryptoSymbol": cryptoSymbol, "cryptoAddress": cryptoAddress};
+var recordNewAddress = function(cryptoAddress, cryptoSymbol, externalAddress, timestamp){
+    var post =  {"timestamp": timestamp, "cryptoSymbol": cryptoSymbol, "cryptoAddress": cryptoAddress, "externalAddress": externalAddress};
     var connection = database.connectTo('roast_coins');
     var query = connection.query('INSERT INTO external_account_crypto_pairs SET ?', post, function(err, result){
         if (err) {
