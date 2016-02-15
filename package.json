@@ -20,10 +20,7 @@
   },
   "dependencies": {
     "bitcoin": "^2.2.0",
-    "node-rest-client": ">=1.0",
-    "blockchain-account-monitor": "^0.2.0",
-    "bluebird": "^2.3.2",
-    "async": "^0.9.0"
+    "mysql": "^2.10.2"
   },
   "devDependencies": {},
   "scripts": {
@@ -31,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/gatewayd/crytpo-coins-bridge-plugin.git"
+    "url": "https://github.com/RoastBeefSandwichCo/Roast-Coins.git"
   },
   "keywords": [
     "ripple",
