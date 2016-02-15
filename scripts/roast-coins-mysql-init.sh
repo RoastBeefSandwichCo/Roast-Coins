@@ -1,6 +1,7 @@
 #!/bin/bash
-#Initialize database for use by Roast Coins.
+#Initializes database for use by Roast Coins.
 #run as root or with 'sudo mysql-setup.sh'
+#Also executed by setup.sh
 
 mysqls -u root -p -e "CREATE USER 'test01'@'localhost' IDENTIFIED BY 'test01';"
 mysqls -u root -p -e "CREATE DATABASE test01;"
