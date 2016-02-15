@@ -3,14 +3,36 @@
     "pollIntervalAPI": 1,
     "pollOrListenCoins": "poll",
     "pollOrListenIntervalCoins": 300,
-    streamListenOptions = {
-        trace: false,
-        "streams" : ['ledger'],
-        servers :[
+    "streamListenOptions" : {
+        "trace": false,
+        "streams" : ["ledger"],
+        "servers" :[
             {
-                    host : 's1.ripple.com',
-                    port : 443,
-                    id : 0
+                    "host" : "s1.ripple.com",
+                    "port" : 443,
+                    "id" : 0
             }
         ]
+    },
+    "database" : {
+        "client": "mysql",
+        "mysql": {
+            "database_url":"mysql://roast_coins:roast_coins@localhost/roast_coins?debug=true",
+            "host": "localhost",
+            "port": 3306,
+            "user": "roast_coins",
+            "password": "PASSWORD GOES HERE",
+            "database": "roast_coins",
+            "debug": true,
+            "ssl": null
+        },
+        "postgres": "to be implemented",
+        "sqlite": "to be implemented"
+    },
+    "_comment": {
+    "database.type": "MySQL, PostgreSQL, sqlite3. Only MySQL implemented atm.",
+    "not implemented": "ssl"
+    }
 }
+
+
