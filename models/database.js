@@ -1,6 +1,9 @@
 "use strict";
 var mysql = require('mysql');
 var dbProperties = require('../config/config.json');
+//var x = dbProperties.database.client
+//var y = x.toString().toLowerCase();
+//console.log('y:', y);
 var knex = require('knex')({
     client: dbProperties.database.client.toLowerCase(),
     connection: {
@@ -8,7 +11,8 @@ var knex = require('knex')({
         port: dbProperties.database[dbProperties.database.client].port,
         user: dbProperties.database[dbProperties.database.client].user,
         password: dbProperties.database[dbProperties.database.client].password,
-        database: dbProperties.database[dbProperties.database.client].database
+        database: dbProperties.database[dbProperties.database.client].database,
+        debug: dbProperties.database[dbProperties.database.client].debug
     }
 });
 
@@ -80,7 +84,7 @@ var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, extern
     var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
     var db = mysqlConnection();
     var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
-    var knexInsert = ('breasticles').insert(knexString);
+    var knexInsert = knex('breasticles').insert(knexString).asCallback(mysqlCallback);
     /*db.query('INSERT INTO breasticles (timestamp, crypto_symbol, crypto_address, external_address)'
                                  + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAccount]
                                  , mysqlCallback);*/

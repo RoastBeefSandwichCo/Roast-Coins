@@ -15,7 +15,7 @@
         ]
     },
     "database" : {
-        "type": "mysql",
+        "client": "mysql",
         "mysql": {
             "database_url":"mysql://roast_coins:testing@localhost/roast_coins?debug=true",
             "host": "localhost",
