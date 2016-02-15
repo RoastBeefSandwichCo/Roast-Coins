@@ -17,7 +17,7 @@
     "database" : {
         "type": "mysql",
         "mysql": {
-            "database_url":"mysql://roast_coins:testing@localhost/roast_coins?debug=true")
+            "database_url":"mysql://roast_coins:testing@localhost/roast_coins?debug=true",
             "host": "localhost",
             "port": 3306,
             "user": "roast_coins",

@@ -34,6 +34,14 @@
             "rpcpassword" : "ACoDrcojLGbAHFnbDGCi3KB5nhBpBbkurnW2W3jNNQTN",
             "port" : 18694,
             "maxdailypaymenttotal" : 2
+    },
+    "EGC" : {
+            "coindaemon" : "evergreencoind",
+            "sendfrom" : "NADA",
+            "host" : "localhost",
+            "rpcusername" : "EGCDevUsr",
+            "rpcpassword" : "testpass",
+            "port" : 15758,
+            "maxdailypaymenttotal" : 2
     }
-
 }

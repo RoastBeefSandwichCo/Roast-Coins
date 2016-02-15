@@ -1,14 +1,14 @@
 "use strict";
 var mysql = require('mysql');
-var dbProperties = require('../config.json');
+var dbProperties = require('../config/config.json');
 
-function mysqlCallback(error, results){
-    if (err) {
+function mysqlCallback(error, results, fields){
+    if (error) {
          console.log('MYSQL ERR:', error, '\nMYSQL RES:', results)
          return 'error';
      }
      else {
-     console.log('results:', results, '\n query.sql:', query.sql);
+     console.log('results:', results);//, '\n query.sql:', query.sql);
          //call debugOutput function
      return true;
      }
@@ -24,15 +24,21 @@ function mysqlConnection(){
       "database": dbProperties.database.mysql.database,
       "debug": dbProperties.database.mysql.debug
     });
-    
+    connection.on('error', function(err) {
+      console.log(err.code); // 'ER_BAD_DB_ERROR'
+    });
     connection.connect(function(err) {
       if (err) {
-        console.error('error connecting: ' + err.stack);
+        console.log('error connecting: ' + err.stack);
         return;
       }
-    
       console.log('connected as id ' + connection.threadId);
     });
+    if (connection.threadId === null) {
+        console.error('NOT CONNECTED TO DATABASE!');
+        return 'error';
+    }
+console.log('mysqlConnection success');
 return connection;
 }
 
@@ -40,7 +46,8 @@ return connection;
 function createAddressTable(){
     var queryCreateTable = 'CREATE TABLE IF NOT EXISTS external_account_crypto_pairs (id AUTOINCREMENT NOT NULL INT, timestamp NOT NULL INT,'
     + ' crypto_symbol NOT NULL VARCHAR, crypto_address NOT NULL VARCHAR, external_address VARCHAR);';
-    var query = mysqlConnection().query(queryCreateTable, mysqlCallback(error, results));
+    var db = mysqlConnection();
+    var x = db.query(queryCreateTable, mysqlCallback(stuff));//error, results, fields));
 }
 
 
@@ -52,13 +59,14 @@ var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, extern
 };
 
 
-createAddressTable(); // ensure table exists before use
+//createAddressTable(); // ensure table exists before use
+
 module.exports = {
-    "recordNewAddressRelationship": recordNewAddressRelationship()
+    "recordNewAddressRelationship": recordNewAddressRelationship
 };
 
 
-
+//createAddressTable();
 
 //FOR PG
 /*http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/
