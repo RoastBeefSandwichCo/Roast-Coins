@@ -1,5 +1,5 @@
 "use strict";
-var mysql = require('mysql');
+//var mysql = require('mysql');
 var dbProperties = require('../config/config.json');
 //var x = dbProperties.database.client
 //var y = x.toString().toLowerCase();
@@ -12,32 +12,35 @@ var knex = require('knex')({
         user: dbProperties.database[dbProperties.database.client].user,
         password: dbProperties.database[dbProperties.database.client].password,
         database: dbProperties.database[dbProperties.database.client].database,
-        debug: dbProperties.database[dbProperties.database.client].debug
+//          debug: dbProperties.database[dbProperties.database.client].debug
     }
 });
 
-function mysqlCallback(error, results, fields){
+function closeDb(){
+    knex.destroy();
+}
+function mysqlCallback(promise, error, results, fields){
     if (error) {
-        console.log('MYSQL ERR:', error);
+        console.log('========MYSQL ERR:', error);
         if (error.errno == 1045) {
-            console.log("YOU FUCKED UP THE CREDENTIALS, forgot to create a user, a database, etc. Or, you know. The script"
-                        + "\ncould be broken. Which would be my bad. But I blame YOU."
-                        + "\nIn MySQL:\n CREATE USER 'roast_coins'@'localhost' IDENTIFIED BY 'mypass';"
-                        + "\nCREATE DATABASE roast_coins;\nGRANT ALL PRIVILEGES ON roast_coins TO roast_coins@'localhost';"
-                        + "\nUse @'localhost' only if the database server is local.");
+            console.log("YOU FUCKED UP. Check the db connection settings. Check user existence."
+                        + "\nCheck db existence. Check table. Call The Lone Ranger, Dirty Harry, Robocop.");
         }
+         promise.resolve();
          return 'error';
         //ECONNREFUSED is mysql running?
         //1064 ER_PARSE_ERROR woops. my bad, dawg.
      }
     if (results) {
-        console.log('RESULTS:', results);
+        console.log('========RESULTS:', results);
     }
     if (fields) {
-        console.log('\nFIELDS:', fields);
+        console.log('\n========FIELDS:', fields);
     }
     console.log('nah im here');
-    return;
+//    promise.resolve;
+                    //{        then: function(onFulfill, onReject) { onFulfill("fulfilled!"); }    });
+    return promise;
 }
 
 
@@ -73,23 +76,46 @@ return connection;
 
 
 function createAddressTable(){
-    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS breasticles (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
+
+    knex.schema.createTableIfNotExists('breasticles', function (table) {
+        table.increments();
+        table.integer('timestamp');
+        table.string('crypto_symbol');
+        table.string('crypto_address');
+        table.string('external_address');
+    }).catch(function(error){
+        console.log('error in knex table creation');
+        })
+    .return;
+/*    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS breasticles (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
     var db = mysqlConnection();
     db.query(queryCreateTable, mysqlCallback);//error, results, fields));
     return;
+*/
 }
 
 
-var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp){
+var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp, callback){
     var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
-    var db = mysqlConnection();
+  //  var db = mysqlConnection();
     var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
-    var knexInsert = knex('breasticles').insert(knexString).asCallback(mysqlCallback);
+/*    var aPromise = new Promise(function(resolve, reject){
+        pending(false);
+        resolve(closeDb); //eventually when this randomly starts working, you'll find a #BUG here
+        }).then(function (promise){return promise;})
+    .then(function(result){result.pending; return result;});
+*/
+    var knexInsert = knex('breasticles').insert(knexString).then(mysqlCallback)
+    .then(function(lastAffectedRow){
+        console.log('lastAffectedRow', lastAffectedRow);
+        //return true;
+        closeDb();});/*
+    }).then(aPromise.resolve);
     /*db.query('INSERT INTO breasticles (timestamp, crypto_symbol, crypto_address, external_address)'
                                  + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAccount]
                                  , mysqlCallback);*/
     console.log('im here');
-    return;
+    return;// aPromise;
 };
 
 
@@ -103,7 +129,8 @@ if (process.argv.length > 2) {
 
 
 module.exports = {
-    "recordNewAddressRelationship": recordNewAddressRelationship
+    "recordNewAddressRelationship": recordNewAddressRelationship,
+    "closeDb": closeDb
 };
 
 
