@@ -87,7 +87,10 @@ function createAddressTable(){
     }).catch(function(error){
         console.log('error in knex table creation');
         })
-    .return;
+    .then(function(result){
+        console.log('creationResult:', result);
+        //return true;
+        closeDb();});/*
 /*    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS coin_index (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
     var db = mysqlConnection();
     db.query(queryCreateTable, mysqlCallback);//error, results, fields));
