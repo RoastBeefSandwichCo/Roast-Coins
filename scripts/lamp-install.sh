@@ -8,7 +8,7 @@ MYSQL_ROOT_PW=`randpw 20`
 echo "MYSQL_ROOT_PW:$MYSQL_ROOT_PW"
 MYSQL_ROAST_COINS_PW=`randpw 20`
 echo "MYSQL_ROAST_COINS_PW:$MYSQL_ROAST_COINS_PW"
-export MYSQL_ROAST_COINS_PW=$MYSQL_ROAST_COINS_PW
+#useless export MYSQL_ROAST_COINS_PW=$MYSQL_ROAST_COINS_PW
 echo mysql-server mysql-server/root_password password $MYSQL_ROOT_PW | sudo debconf-set-selections
 echo mysql-server mysql-server/root_password_again password $MYSQL_ROOT_PW | sudo debconf-set-selections
 
@@ -19,8 +19,15 @@ sudo apt-get install mysql-server mysql-client -y
 
 #Install Roast Coins database user.
 #@'localhost' is used because this is automated. Advanced users working with remote db don't need this script.
+echo mysql -u root -p$MYSQL_ROOT_PW -e "DROP USER 'roast_coins'@'localhost';"
+mysql -u root -p$MYSQL_ROOT_PW -e "DROP USER 'roast_coins'@'localhost';"
+echo mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
+mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
+#end user creation failure bug workaround
 echo mysql -u root -p$MYSQL_ROOT_PW -e "CREATE USER 'roast_coins'@'localhost' IDENTIFIED BY '$MYSQL_ROAST_COINS_PW';"
 mysql -u root -p$MYSQL_ROOT_PW -e "CREATE USER 'roast_coins'@'localhost' IDENTIFIED BY '$MYSQL_ROAST_COINS_PW';"
+echo mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
+mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
 echo mysql -u root -p$MYSQL_ROOT_PW -e "CREATE DATABASE roast_coins;"
 mysql -u root -p$MYSQL_ROOT_PW -e "CREATE DATABASE roast_coins;"
 echo mysql -u root -p$MYSQL_ROOT_PW -e "GRANT ALL PRIVILEGES ON roast_coins.* TO roast_coins@'localhost';"

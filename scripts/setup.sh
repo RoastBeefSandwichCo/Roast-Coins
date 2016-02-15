@@ -4,5 +4,5 @@
 #TODO: FIXME: some stuff shouldn't be done as root if not necessary. Rework.
 
 ./lamp-install.sh
-./roast-coins-setup.sh
+./roast-coins-init.sh
 

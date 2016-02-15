@@ -12,9 +12,10 @@ var knex = require('knex')({
         user: dbProperties.database[dbProperties.database.client].user,
         password: dbProperties.database[dbProperties.database.client].password,
         database: dbProperties.database[dbProperties.database.client].database,
-//          debug: dbProperties.database[dbProperties.database.client].debug
+        debug: dbProperties.database[dbProperties.database.client].debug
     }
 });
+console.log(knex);
 
 function closeDb(){
     knex.destroy();
@@ -77,7 +78,7 @@ return connection;
 
 function createAddressTable(){
 
-    knex.schema.createTableIfNotExists('breasticles', function (table) {
+    knex.schema.createTableIfNotExists('coin_index', function (table) {
         table.increments();
         table.integer('timestamp');
         table.string('crypto_symbol');
@@ -87,7 +88,7 @@ function createAddressTable(){
         console.log('error in knex table creation');
         })
     .return;
-/*    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS breasticles (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
+/*    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS coin_index (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
     var db = mysqlConnection();
     db.query(queryCreateTable, mysqlCallback);//error, results, fields));
     return;
@@ -105,13 +106,13 @@ var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, extern
         }).then(function (promise){return promise;})
     .then(function(result){result.pending; return result;});
 */
-    var knexInsert = knex('breasticles').insert(knexString).then(mysqlCallback)
+    var knexInsert = knex('coin_index').insert(knexString).then(mysqlCallback)
     .then(function(lastAffectedRow){
         console.log('lastAffectedRow', lastAffectedRow);
         //return true;
         closeDb();});/*
     }).then(aPromise.resolve);
-    /*db.query('INSERT INTO breasticles (timestamp, crypto_symbol, crypto_address, external_address)'
+    /*db.query('INSERT INTO coin_index (timestamp, crypto_symbol, crypto_address, external_address)'
                                  + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAccount]
                                  , mysqlCallback);*/
     console.log('im here');
