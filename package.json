@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "description": "Node.js modules to facilitate integration & automation of cryptocurrency coins into a ripple gateway",
   "contributors": [{
-  {
     "name": "Brooks",
     "email": "ninobrooks@gmail.com"
   },
@@ -14,7 +13,6 @@
   {
     "name": "Steven Zeiler",
     "email": "stevenzeiler@gmail.com"
-  }
   }],
   "main": "main.js",
   "directories": {
