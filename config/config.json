@@ -20,9 +20,9 @@
             "database_url":"mysql://roast_coins:testing@localhost/roast_coins?debug=true",
             "host": "localhost",
             "port": 3306,
-            "user": "roast_coins",
-            "password": "testing",
-            "database": "roast_coins",
+            "user": "test01",
+            "password": "test01",
+            "database": "test01",
             "debug": true,
             "ssl": null
         },

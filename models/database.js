@@ -4,14 +4,25 @@ var dbProperties = require('../config/config.json');
 
 function mysqlCallback(error, results, fields){
     if (error) {
-         console.log('MYSQL ERR:', error, '\nMYSQL RES:', results)
+        console.log('MYSQL ERR:', error);
+        if (error.errno == 1045) {
+            console.log("YOU FUCKED UP THE CREDENTIALS, forgot to create a user, a database, etc. Or, you know. The script"
+                        + "\ncould be broken. Which would be my bad. But I blame YOU."
+                        + "\nIn MySQL:\n CREATE USER 'roast_coins'@'localhost' IDENTIFIED BY 'mypass';"
+                        + "\nCREATE DATABASE roast_coins;\nGRANT ALL PRIVILEGES ON roast_coins TO roast_coins@'localhost';"
+                        + "\nUse @'localhost' only if the database server is local.");
+        }
          return 'error';
+        //ECONNREFUSED is mysql running?
+        //1064 ER_PARSE_ERROR woops. my bad, dawg.
      }
-     else {
-     console.log('results:', results);//, '\n query.sql:', query.sql);
-         //call debugOutput function
-     return true;
-     }
+    if (results) {
+        console.log('RESULTS:', results);
+    }
+    if (fields) {
+        console.log('\nFIELDS:', fields);
+    }
+    return;
 }
 
 
@@ -24,42 +35,54 @@ function mysqlConnection(){
       "database": dbProperties.database.mysql.database,
       "debug": dbProperties.database.mysql.debug
     });
+    console.log('dbProperties.blahblah', dbProperties.database.mysql);
     connection.on('error', function(err) {
-      console.log(err.code); // 'ER_BAD_DB_ERROR'
+      console.log('ERROR! HUZZAH!!!', err.code); // #TODO: do something with this
     });
-    connection.connect(function(err) {
+    /*connection.connect(function(err) {
       if (err) {
         console.log('error connecting: ' + err.stack);
         return;
       }
       console.log('connected as id ' + connection.threadId);
     });
+    
     if (connection.threadId === null) {
         console.error('NOT CONNECTED TO DATABASE!');
         return 'error';
     }
-console.log('mysqlConnection success');
+//console.log('mysqlConnection success');
+    */
 return connection;
 }
 
 
 function createAddressTable(){
-    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS external_account_crypto_pairs (id AUTOINCREMENT NOT NULL INT, timestamp NOT NULL INT,'
-    + ' crypto_symbol NOT NULL VARCHAR, crypto_address NOT NULL VARCHAR, external_address VARCHAR);';
+    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS breasticles (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
     var db = mysqlConnection();
-    var x = db.query(queryCreateTable, mysqlCallback(stuff));//error, results, fields));
+    db.query(queryCreateTable, mysqlCallback);//error, results, fields));
+    return;
 }
 
 
 var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp){
-    var post =  {"timestamp": timestamp, "cryptoSymbol": cryptoSymbol, "cryptoAddress": cryptoAddress, "externalAccount": externalAccount};
-    var query = mysqlConnection().query('INSERT INTO external_account_crypto_pairs (timestamp, crypto_symbol, crypto_address, external_account)'
+    var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
+    var db = mysqlConnection();
+    db.query('INSERT INTO breasticles (timestamp, crypto_symbol, crypto_address, external_address)'
                                  + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAccount]
-                                 , mysqlCallback(error, results));
+                                 , mysqlCallback);
+    return;
 };
 
 
-//createAddressTable(); // ensure table exists before use
+//#TODO: detect cli invocation for easy table creation
+if (process.argv.length > 2) {
+    if (process.argv[2] == 'createTable') {
+        console.log('CLI invocation. Creating address table.');
+        createAddressTable();
+    }
+}
+
 
 module.exports = {
     "recordNewAddressRelationship": recordNewAddressRelationship
@@ -78,6 +101,7 @@ client.connect();
 var query = client.query('CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
 query.on('end', function() { client.end(); });*/
 
+//#TODO: make this WAY more efficient.
 //TODO: ADD TO DOC:
 //'mysql -u root -p -e "CREATE USER 'test' IDENTIFIED BY 'test';"
 //CREATE DATABASE IF NOT EXISTS roast_coins //do not do this programatically. roast_coins does not need that level of privilege.
