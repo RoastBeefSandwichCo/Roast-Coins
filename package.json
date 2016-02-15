@@ -1,26 +1,29 @@
 {
   "name": "crypto-coins-gatewayd-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Node.js modules to facilitate integration & automation of cryptocurrency coins into a ripple gateway",
   "contributors": [{
-    "name": "Jacob McShane",
+  {
+    "name": "Brooks",
+    "email": "ninobrooks@gmail.com"
+  },
+  {
+  "name": "Jacob McShane",
     "email": "jimster6543@gmail.com"
   },
   {
     "name": "Steven Zeiler",
     "email": "stevenzeiler@gmail.com"
-  },
-  {
-    "name": "Brooks",
-    "email": "ninobrooks@gmail.com"
+  }
   }],
   "main": "main.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "bitcoin": "^2.2.0",
-    "mysql": "^2.10.2"
+    "bitcoin": ">=2.2.0",
+    "mysql": ">=2.10.2",
+    "knex": ">=0.10.0"
   },
   "devDependencies": {},
   "scripts": {
