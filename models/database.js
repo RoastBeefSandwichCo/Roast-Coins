@@ -1,6 +1,16 @@
 "use strict";
 var mysql = require('mysql');
 var dbProperties = require('../config/config.json');
+var knex = require('knex')({
+    client: dbProperties.database.client.toLowerCase(),
+    connection: {
+        host: dbProperties.database[dbProperties.database.client].host,
+        port: dbProperties.database[dbProperties.database.client].port,
+        user: dbProperties.database[dbProperties.database.client].user,
+        password: dbProperties.database[dbProperties.database.client].password,
+        database: dbProperties.database[dbProperties.database.client].database
+    }
+});
 
 function mysqlCallback(error, results, fields){
     if (error) {
@@ -22,6 +32,7 @@ function mysqlCallback(error, results, fields){
     if (fields) {
         console.log('\nFIELDS:', fields);
     }
+    console.log('nah im here');
     return;
 }
 
@@ -35,7 +46,7 @@ function mysqlConnection(){
       "database": dbProperties.database.mysql.database,
       "debug": dbProperties.database.mysql.debug
     });
-    console.log('dbProperties.blahblah', dbProperties.database.mysql);
+    //console.log('dbProperties.blahblah', dbProperties.database.mysql);
     connection.on('error', function(err) {
       console.log('ERROR! HUZZAH!!!', err.code); // #TODO: do something with this
     });
@@ -68,9 +79,12 @@ function createAddressTable(){
 var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp){
     var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
     var db = mysqlConnection();
-    db.query('INSERT INTO breasticles (timestamp, crypto_symbol, crypto_address, external_address)'
+    var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
+    var knexInsert = ('breasticles').insert(knexString);
+    /*db.query('INSERT INTO breasticles (timestamp, crypto_symbol, crypto_address, external_address)'
                                  + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAccount]
-                                 , mysqlCallback);
+                                 , mysqlCallback);*/
+    console.log('im here');
     return;
 };
 
