@@ -3,7 +3,7 @@
 //TODO: re-examine self-tests
 var bitcoin = require ('bitcoin'); //https://www.npmjs.org/package/bitcoin greatly simplifies interfacing with coin daemons
 var coins = require ("./cryptocurrencies.json");//coin configurations
-var coinDaemons = require ("./coin-daemons.js");
+var coinDaemons = require ("./coin-daemons.js"); //#FIXME: probably broken after change in coin-daemons.js exports
 var transactions = require ("./lib/outgoing-bridge.js");
 transactions.coinDaemons = coinDaemons; //validateAddress function needs coinDaemons object
 var sep = '\n--------------------------------------------------------\n';

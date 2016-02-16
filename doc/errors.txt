@@ -14,7 +14,3 @@ econnreset
 
 Unauthorized:
 ERROR: { [Error: Invalid params, response status code: 401] code: -32602 }
-
-
-TODO:
-gatewayd offline
