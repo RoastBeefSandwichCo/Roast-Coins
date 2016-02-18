@@ -39,42 +39,9 @@ function mysqlCallback(promise, error, results, fields){
         console.log('\n========FIELDS:', fields);
     }
     console.log('nah im here');
-//    promise.resolve;
-                    //{        then: function(onFulfill, onReject) { onFulfill("fulfilled!"); }    });
+
     return promise;
 }
-
-
-function mysqlConnection(){
-    var connection = mysql.createConnection({
-      "host": dbProperties.database.mysql.host,
-      "port": dbProperties.database.mysql.port,
-      "user": dbProperties.database.mysql.user,
-      "password": dbProperties.database.mysql.password,
-      "database": dbProperties.database.mysql.database,
-      "debug": dbProperties.database.mysql.debug
-    });
-    //console.log('dbProperties.blahblah', dbProperties.database.mysql);
-    connection.on('error', function(err) {
-      console.log('ERROR! HUZZAH!!!', err.code); // #TODO: do something with this
-    });
-    /*connection.connect(function(err) {
-      if (err) {
-        console.log('error connecting: ' + err.stack);
-        return;
-      }
-      console.log('connected as id ' + connection.threadId);
-    });
-    
-    if (connection.threadId === null) {
-        console.error('NOT CONNECTED TO DATABASE!');
-        return 'error';
-    }
-//console.log('mysqlConnection success');
-    */
-return connection;
-}
-
 
 function createAddressTable(){
 
@@ -90,12 +57,7 @@ function createAddressTable(){
     .then(function(result){
         console.log('creationResult:', result);
         //return true;
-        closeDb();});/*
-/*    var queryCreateTable = 'CREATE TABLE IF NOT EXISTS coin_index (id INT AUTO_INCREMENT PRIMARY KEY, timestamp INT, crypto_symbol VARCHAR(255), crypto_address VARCHAR(255), external_address VARCHAR(255));';
-    var db = mysqlConnection();
-    db.query(queryCreateTable, mysqlCallback);//error, results, fields));
-    return;
-*/
+        closeDb();});
 }
 
 
@@ -103,23 +65,13 @@ var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, extern
     var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
   //  var db = mysqlConnection();
     var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
-/*    var aPromise = new Promise(function(resolve, reject){
-        pending(false);
-        resolve(closeDb); //eventually when this randomly starts working, you'll find a #BUG here
-        }).then(function (promise){return promise;})
-    .then(function(result){result.pending; return result;});
-*/
     var knexInsert = knex('coin_index').insert(knexString).then(mysqlCallback)
     .then(function(lastAffectedRow){
         console.log('lastAffectedRow', lastAffectedRow);
         //return true;
-        closeDb();});/*
-    }).then(aPromise.resolve);
-    /*db.query('INSERT INTO coin_index (timestamp, crypto_symbol, crypto_address, external_address)'
-                                 + ' VALUES(?, ?, ?, ?);', [timestamp, cryptoSymbol, cryptoAddress, externalAccount]
-                                 , mysqlCallback);*/
+        closeDb();});
     console.log('im here');
-    return;// aPromise;
+    return;
 };
 
 
