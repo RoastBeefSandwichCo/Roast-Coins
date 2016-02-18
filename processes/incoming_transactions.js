@@ -3,7 +3,7 @@ const blockchain = require('blockchain-account-monitor');
 const async = require('async');
 
 var ExternalAccount = gatewayd.data.models.externalAccounts;
-var ExternalTransaction = gatewayd.data.models.externalTransactions;
+var ExternalTransaction = gatewayd.data.models.externalTransactions; //#THIS is what you change!
 const Promise = require('bluebird');
 const monitor = new blockchain.AccountMonitor({
   blockchainClient: new blockchain.Client(
@@ -14,7 +14,7 @@ const monitor = new blockchain.AccountMonitor({
     var transactions = [];
     var records = [];
     async.all(block, function(transaction, callback) {
-      ExternalAccount.findOrCreate({
+      ExternalAccount.findOrCreate({              //include in new db model
         uid: transaction.address,
         name: 'dogecoin'
       })
@@ -23,7 +23,7 @@ const monitor = new blockchain.AccountMonitor({
           uid: transaction.txid,
           amount: transaction.amount,
           currency: 'DOG',
-          external_account_id: externalAccount.id,
+          external_account_id: externalAccount.id, //include in new db model
           deposit: true,
           status: 'incoming'
         })
