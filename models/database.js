@@ -1,9 +1,5 @@
 "use strict";
-//var mysql = require('mysql');
 var dbProperties = require('../config/config.json');
-//var x = dbProperties.database.client
-//var y = x.toString().toLowerCase();
-//console.log('y:', y);
 var knex = require('knex')({
     client: dbProperties.database.client.toLowerCase(),
     connection: {
@@ -20,17 +16,10 @@ console.log(knex);
 function closeDb(){
     knex.destroy();
 }
-function mysqlCallback(promise, error, results, fields){
+function dbCallback(error, results, fields){
     if (error) {
         console.log('========MYSQL ERR:', error);
-        if (error.errno == 1045) {
-            console.log("YOU FUCKED UP. Check the db connection settings. Check user existence."
-                        + "\nCheck db existence. Check table. Call The Lone Ranger, Dirty Harry, Robocop.");
-        }
-         promise.resolve();
          return 'error';
-        //ECONNREFUSED is mysql running?
-        //1064 ER_PARSE_ERROR woops. my bad, dawg.
      }
     if (results) {
         console.log('========RESULTS:', results);
@@ -65,7 +54,7 @@ var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, extern
     var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
   //  var db = mysqlConnection();
     var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
-    var knexInsert = knex('coin_index').insert(knexString).then(mysqlCallback)
+    var knexInsert = knex('coin_index').insert(knexString).then(dbCallback)
     .then(function(lastAffectedRow){
         console.log('lastAffectedRow', lastAffectedRow);
         //return true;
@@ -89,8 +78,6 @@ module.exports = {
     "closeDb": closeDb
 };
 
-
-//createAddressTable();
 
 //FOR PG
 /*http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/
