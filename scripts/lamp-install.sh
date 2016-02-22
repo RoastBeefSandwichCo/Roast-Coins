@@ -20,7 +20,9 @@ sudo apt-get install mysql-server mysql-client -y
 #Install Roast Coins database user.
 #@'localhost' is used because this is automated. Advanced users working with remote db don't need this script.
 echo mysql -u root -p$MYSQL_ROOT_PW -e "DROP USER 'roast_coins'@'localhost';"
+echo ^THIS SHOULD FAIL UNLESS YOU ARE REINSTALLING
 mysql -u root -p$MYSQL_ROOT_PW -e "DROP USER 'roast_coins'@'localhost';"
+
 echo mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
 mysql -u root -p$MYSQL_ROOT_PW -e "FLUSH PRIVILEGES;"
 #end user creation failure bug workaround

@@ -21,7 +21,7 @@
             "host": "localhost",
             "port": 3306,
             "user": "roast_coins",
-            "password": "b4QZoNLa2dS49VS5BRnm",
+            "password": "f8sfMnQ2ZJZoKifEG-o0",
             "database": "roast_coins",
             "debug": true,
             "ssl": null
