@@ -17,19 +17,19 @@ var knex = require('knex')({
 function closeDb(){
     knex.destroy();
 }
-function dbCallback(error, results, fields){
-    if (error) {
-        console.log('========MYSQL ERR:', error);
-         return 'error';
+function dbCallback(results, results2, fields){ //suspect first field can be returned value or error. #TODO: parse appropriately
+    if (results) {
+        console.log('========MYSQL RESULTS:', results);
+         return results;
      }
     if (results) {
-        console.log('========RESULTS:', results);
+        console.log('========RESULTS2:', results2);
     }
     if (fields) {
         console.log('\n========FIELDS:', fields);
     }
     console.log('nah im here');
-
+console.log(results, results2, fields)
     return promise;
 }
 
@@ -127,7 +127,7 @@ function getLastBlockChecked(cryptoSymbol, callback) {
 }
 
 var getExternalAddress = function(cryptoAddress){
-    externalAddress = knex.select('external_address').from('coin_index').where('crypto_address', cryptoAddress).limit(1);
+    var externalAddress = knex.select('external_address').from('coin_index').where('crypto_address', cryptoAddress).limit(1);
     console.log('address pair:', cryptoAddress, externalAddress);
     return externalAddress;
     
@@ -168,6 +168,7 @@ if (process.argv.length > 2) {
 
 module.exports = {
     "closeDb": closeDb,
+    "getExternalAddress": getExternalAddress,
     "getLastBlockChecked": getLastBlockChecked,
     "recordNewAddressRelationship": recordNewAddressRelationship
 };
