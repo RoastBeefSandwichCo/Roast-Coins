@@ -29,7 +29,7 @@ function dbCallback(results, results2, fields){ //suspect first field can be ret
         console.log('\n========FIELDS:', fields);
     }
     console.log('nah im here');
-console.log(results, results2, fields)
+    console.log(results, results2, fields)
     return promise;
 }
 
@@ -74,23 +74,22 @@ function createTableCoinIndex(){
 };
 
 function createTableExternalTransactions() {  //records blockchain transaction info and associated external address
-    var x = knex.schema.createTableIfNotExists('external_transactions', function (table) {
+    var x = knex.schema.createTableIfNotExists('blockchain_transactions', function (table) {
         table.increments();
-        table.integer('timestamp');
-        table.string('crypto_symbol');
         table.string('crypto_address');
+        table.string('crypto_symbol');
         table.string('external_address');
-        table.boolean('direction');
-        table.boolean('finished');
+        table.boolean('finished');  // Finished = 0 = False = Pending.
+        table.boolean('is_inbound');  //0 = false = outbound
+        table.integer('timestamp');
         table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
         table.integer('bc_blockindex');
         table.integer('bc_blocktime');
-        table.string('bc_txid');
         table.integer('bc_time');
         table.integer('bc_timereceived');
-        
+        table.string('bc_txid');
     }).catch(function(error){
-        console.log('error in knex table creation: external_transactions');
+        console.log('error in knex table creation: blockchain_transactions');
         })
     return x;
     /*.then(function(result){
@@ -128,21 +127,31 @@ function getLastBlockChecked(cryptoSymbol, callback) {
 
 var getExternalAddress = function(cryptoAddress){
     var externalAddress = knex.select('external_address').from('coin_index').where('crypto_address', cryptoAddress).limit(1);
-    console.log('address pair:', cryptoAddress, externalAddress);
+    //console.log('address pair:', cryptoAddress, externalAddress);
     return externalAddress;
     
 }
 var recordLastBlockChecked = function (cryptoSymbol, blockHash, timestamp){
+    console.log('Inserting record into last_block_index');
     var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, blockHash}
     var knexInsert = knex('last_block_index').insert(knexString).then(dbCallback)
     .then(function(lastAffectedRow){
         console.log('lastAffectedRow', lastAffectedRow);
         //return true;
         closeDb();});
-    console.log('Inserting record into last_block_index');
     return;
     
 }
+
+var recordTransaction = function(transactionObject){
+    console.log('Inserting transaction into blockchain_transactions');
+    var knexInsert = knex('blockchain_transactions').insert(transactionObject).then(dbCallback)
+    .then(function(output){
+        console.log('insertTx output:', output);
+    });
+    return knexInsert;
+};
+
 var recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp, callback){
 //comment out, test, remove    var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
   //  var db = mysqlConnection();
@@ -170,7 +179,8 @@ module.exports = {
     "closeDb": closeDb,
     "getExternalAddress": getExternalAddress,
     "getLastBlockChecked": getLastBlockChecked,
-    "recordNewAddressRelationship": recordNewAddressRelationship
+    "recordNewAddressRelationship": recordNewAddressRelationship,
+    "recordTransaction": recordTransaction
 };
 
 
