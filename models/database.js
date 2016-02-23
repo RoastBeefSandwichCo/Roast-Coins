@@ -73,7 +73,7 @@ function createTableCoinIndex(){
     return x;
 };
 
-function createTableExternalTransactions() {
+function createTableExternalTransactions() {  //records blockchain transaction info and associated external address
     var x = knex.schema.createTableIfNotExists('external_transactions', function (table) {
         table.increments();
         table.integer('timestamp');
@@ -100,7 +100,8 @@ function createTableExternalTransactions() {
     //varchar 255 string external_address, bool? direction, bool? finished(edited)
 }
 
-function createTableLastBlockIndex(){
+function createTableLastBlockIndex(){ //tracks the last block for which we have processed all transactions #TODO: what happens when they're
+    //partially processed?
     var x = knex.schema.createTableIfNotExists('last_block_index', function (table) {
         table.increments();
         table.integer('timestamp');
@@ -116,20 +117,22 @@ function createTableLastBlockIndex(){
     });*/
 }
 
-function getLastBlockChecked(crypto_symbol) {
-    last_checked = knex.select('block_hash').from('last_block_index').where('crypto_symbol', crypto_symbol)
-    .orderBy('id', 'desc');
+function getLastBlockChecked(cryptoSymbol, callback) {
+    var last_checked = knex.select('block_hash').from('last_block_index').where('crypto_symbol', cryptoSymbol)
+    .orderBy('id', 'desc')
+    .limit(1)
+    .then(callback);
     console.log('last_checked = ', last_checked);
     return last_checked;
 }
 
 var getExternalAddress = function(cryptoAddress){
-    externalAddress = knex.select('external_address').from('coin_index').where('crypto_address', cryptoAddress);
+    externalAddress = knex.select('external_address').from('coin_index').where('crypto_address', cryptoAddress).limit(1);
     console.log('address pair:', cryptoAddress, externalAddress);
     return externalAddress;
     
 }
-var recordLastBlockChecked = function (crypto_symbol, blockHash, timestamp){
+var recordLastBlockChecked = function (cryptoSymbol, blockHash, timestamp){
     var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, blockHash}
     var knexInsert = knex('last_block_index').insert(knexString).then(dbCallback)
     .then(function(lastAffectedRow){
@@ -164,8 +167,9 @@ if (process.argv.length > 2) {
 
 
 module.exports = {
-    "recordNewAddressRelationship": recordNewAddressRelationship,
-    "closeDb": closeDb
+    "closeDb": closeDb,
+    "getLastBlockChecked": getLastBlockChecked,
+    "recordNewAddressRelationship": recordNewAddressRelationship
 };
 
 
