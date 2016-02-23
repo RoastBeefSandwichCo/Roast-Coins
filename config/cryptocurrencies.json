@@ -7,7 +7,7 @@
             "rpcpassword" : "FkiiBrco3tL8uaXpxxYExesroshSuew7skPEfMYfaFhs",
             "port" : 8332,
             "maxdailypaymenttotal" : 2,
-            "minimumconfirmations:": 3
+            "minimumconfirmations": 3
     },
     "DOGE" : {
             "coindaemon" : "dogecoind",
@@ -17,7 +17,7 @@
             "rpcpassword" : "5SMKjzXvoDKUVNo8ZNNHnQpjvdLP4oz4uokXwwVAi2r5",
             "port" : 8342,
             "maxdailypaymenttotal" : 2,
-            "minimumconfirmations:": 7
+            "minimumconfirmations": 7
     },
     "LTC" : {
             "coindaemon" : "litecoind",
@@ -27,7 +27,7 @@
             "rpcpassword" : "2ivRBPxGZ5WAZRq2JwSeiD1DyNgk4rWbRfC312YNvjJR",
             "port" : 9332,
             "maxdailypaymenttotal" : 2,
-            "minimumconfirmations:": 5
+            "minimumconfirmations": 5
     },
     "PHC" : {
             "coindaemon" : "phcoind",
@@ -37,16 +37,16 @@
             "rpcpassword" : "ACoDrcojLGbAHFnbDGCi3KB5nhBpBbkurnW2W3jNNQTN",
             "port" : 18694,
             "maxdailypaymenttotal" : 2,
-            "minimumconfirmations:": 5
+            "minimumconfirmations": 5
     },
     "EGC" : {
             "coindaemon" : "evergreencoind",
             "sendfrom" : "NADA",
             "host" : "localhost",
-            "rpcusername" : "EGCDevUsr",
-            "rpcpassword" : "testpass",
-            "port" : 15758,
+            "rpcusername" : "user",
+            "rpcpassword" : "pass",
+            "port" : 5758,
             "maxdailypaymenttotal" : 2,
-            "minimumconfirmations:": 7
+            "minimumconfirmations" : 7
     }
 }
