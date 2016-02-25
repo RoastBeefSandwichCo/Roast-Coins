@@ -81,7 +81,7 @@ function createTableExternalTransactions() {  //records blockchain transaction i
         table.string('external_address');
         table.boolean('finished');  // Finished = 0 = False = Pending.
         table.boolean('is_inbound');  //0 = false = outbound
-        table.integer('timestamp');
+        table.integer('rc_timestamp'); //When the block notification was received by Roast Coins
         table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
         table.integer('bc_blockindex');
         table.integer('bc_blocktime');
@@ -121,7 +121,7 @@ function getLastBlockChecked(cryptoSymbol, callback) {
     .orderBy('id', 'desc')
     .limit(1)
     .then(callback);
-    console.log('last_checked = ', last_checked);
+    //console.log('last_checked = ', last_checked);
     return last_checked;
 }
 
@@ -131,10 +131,10 @@ var getExternalAddress = function(cryptoAddress){
     return externalAddress;
     
 }
-var recordLastBlockChecked = function (cryptoSymbol, blockHash, timestamp){
+var recordLastBlockChecked = function (blockInfoObject){
     console.log('Inserting record into last_block_index');
-    var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, blockHash}
-    var knexInsert = knex('last_block_index').insert(knexString).then(dbCallback)
+//    var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "block_hash": blockHash}
+    var knexInsert = knex('last_block_index').insert(blockInfoObject).then(dbCallback)
     .then(function(lastAffectedRow){
         console.log('lastAffectedRow', lastAffectedRow);
         //return true;
@@ -179,6 +179,7 @@ module.exports = {
     "closeDb": closeDb,
     "getExternalAddress": getExternalAddress,
     "getLastBlockChecked": getLastBlockChecked,
+    "recordLastBlockChecked": recordLastBlockChecked,
     "recordNewAddressRelationship": recordNewAddressRelationship,
     "recordTransaction": recordTransaction
 };
