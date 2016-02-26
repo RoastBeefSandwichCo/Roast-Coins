@@ -83,6 +83,7 @@ function createTableExternalTransactions() {  //records blockchain transaction i
         table.boolean('is_inbound');  //0 = false = outbound
         table.integer('rc_timestamp'); //When the block notification was received by Roast Coins
         table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
+        table.decimal('bc_amount');
         table.integer('bc_blockindex');
         table.integer('bc_blocktime');
         table.integer('bc_time');
@@ -144,11 +145,12 @@ var recordLastBlockChecked = function (blockInfoObject){
 }
 
 var recordTransaction = function(transactionObject){
-    console.log('Inserting transaction into blockchain_transactions');
+    //console.log('Inserting transaction into blockchain_transactions:', transactionObject);
     var knexInsert = knex('blockchain_transactions').insert(transactionObject).then(dbCallback)
     .then(function(output){
         console.log('insertTx output:', output);
     });
+    //console.log('KNEX IS A', typeof knexInsert, knexInsert);
     return knexInsert;
 };
 
