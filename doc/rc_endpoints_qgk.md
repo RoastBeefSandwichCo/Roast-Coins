@@ -44,17 +44,29 @@ Usage:  Navigate to thedomain.com/get_crypto_symbol_by_external_address.php?time
 Note:  You can use www.unixtimestamp.com for conversions to UNIX time.
 
 
-Proposed Endpoints
-
-
 GET all transactions by blockchain txid (requires user input):
-Proposal: Using get_transactions_by_external_address.php as a template, refactor the GET variable calls from $external
-to $txid an modify the SQL query.
+https://github.com/whotooktwarden/QuickGatewayKit/blob/master/get_transactions_by_txid.php
+
 Usage:  thedomain.com/get_transactions_by_txid.php?txid=transactionID
 
 
 GET all transactions by blockhash (requires user input):
-Proposal: Using get_transactions_by_external_address.php as a template, refactor the GET variable calls from $external        
-to $blockhash an modify the SQL query.
+https://github.com/whotooktwarden/QuickGatewayKit/blob/master/get_transactions_by_blockhash.php
+
 Usage:  thedomain.com/get_transactions_by_txid.php?blockhash=blockhash
+
+
+Proposed Endpoints
+
+
+Please use this format for proposals:
+
+
+GET all transactions by field (optionally an by second field) (requires user input, if not GET variables are used then omit):
+Link to end-point when completed
+
+Proposal:  Remove this line upon completion.  Propose which template will be used for the basis of a new end-point if applicable.  Explain thoroughly what selectors (if any) will be used to display data. 
+
+Usage:  Navigate to the page (if no GET variables are used).  
+Otherwise use the format thedomain.com/get_transactions_by_field.php?GETVARIABLE=GET_DATA
 
