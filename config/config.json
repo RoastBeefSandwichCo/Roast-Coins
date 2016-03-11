@@ -15,7 +15,7 @@
         ]
     },
     "database" : {
-        "client": "mysql",
+        "client": "postgresql",
         "mysql": {
             "database_url":"mysql://roast_coins:roast_coins@localhost/roast_coins?debug=true",
             "host": "localhost",
@@ -26,7 +26,16 @@
             "debug": true,
             "ssl": null
         },
-        "postgres": "to be implemented",
+        "postgresql": {
+            "database_url":"#BROKENSHITmysql://roast_coins:roast_coins@localhost/roast_coins?debug=true",
+            "host": "localhost",
+            "port": 5432,
+            "user": "roast_coins",
+            "password": "-Qe6lxHfX4uGBq43EE-f",
+            "database": "roast_coins",
+            "debug": true,
+            "ssl": null
+        },
         "sqlite": "to be implemented"
     },
     "_comment": {

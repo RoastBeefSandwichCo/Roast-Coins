@@ -9,7 +9,7 @@ var knex = require('knex')({
         user: dbProperties.database[dbProperties.database.client].user,
         password: dbProperties.database[dbProperties.database.client].password,
         database: dbProperties.database[dbProperties.database.client].database
-//        debug: dbProperties.database[dbProperties.database.client].debug
+        //debug: dbProperties.database[dbProperties.database.client].debug
     }
 });
 //console.log(knex);
