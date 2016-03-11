@@ -1,6 +1,6 @@
 "use strict";
 var dbProperties = require('../config/config.json');
-require('mysql');
+//require('mysql');
 var knex = require('knex')({
     client: dbProperties.database.client.toLowerCase(),
     connection: {
@@ -183,7 +183,8 @@ module.exports = {
     "getLastBlockChecked": getLastBlockChecked,
     "recordLastBlockChecked": recordLastBlockChecked,
     "recordNewAddressRelationship": recordNewAddressRelationship,
-    "recordTransaction": recordTransaction
+    "recordTransaction": recordTransaction,
+    "database": knex
 };
 
 
