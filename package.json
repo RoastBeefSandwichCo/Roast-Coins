@@ -20,8 +20,9 @@
   },
   "dependencies": {
     "bitcoin": ">=2.2.0",
+    "knex": ">=0.10.0",
     "mysql": ">=2.10.2",
-    "knex": ">=0.10.0"
+    "pg": ">=4.5.1"
   },
   "devDependencies": {},
   "scripts": {
