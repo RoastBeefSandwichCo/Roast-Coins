@@ -14,6 +14,8 @@ echo user_roast_coins_pw=$user_roast_coins_pw
 sudo su - postgres -c "psql -c \"ALTER USER postgres WITH PASSWORD '$user_postgres_pw';\""
 sudo su - postgres -c "psql -c \"CREATE USER roast_coins WITH PASSWORD '$user_roast_coins_pw';\""
 sudo su - postgres -c "psql -c \"CREATE DATABASE roast_coins WITH OWNER roast_coins ENCODING='utf8';\""
+#enable password login req for knex to work
+#FIXME: /var/lib/pgsql/pg_hba.conf change ident to md5
 
 #Insert Roast Coins database pw into config, it must be there for initialization by roast-coins-init.sh
 cp ../config/config.example.json ../config/config.json
