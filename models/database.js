@@ -1,18 +1,28 @@
 "use strict";
 var dbProperties = require('../config/config.json');
 //require('mysql');
-var knex = require('knex')({
-    client: dbProperties.database.client.toLowerCase(),
-    connection: {
-        host: dbProperties.database[dbProperties.database.client].host,
-        port: dbProperties.database[dbProperties.database.client].port,
-        user: dbProperties.database[dbProperties.database.client].user,
-        password: dbProperties.database[dbProperties.database.client].password,
-        database: dbProperties.database[dbProperties.database.client].database
-        //debug: dbProperties.database[dbProperties.database.client].debug
-    }
-});
-//console.log(knex);
+/*if (dbProperties.database.client.toLowerCase() === 'postgresql'){
+    var knex = require('knex')({
+        client: 'pg',
+        connection: dbProperties.database[dbProperties.database.client].database_url,
+        searchPath: 'knex,public'
+    });	
+}
+else{
+*/
+    var knex = require('knex')({
+        client: dbProperties.database.client.toLowerCase(),
+        connection: {
+            host: dbProperties.database[dbProperties.database.client].host,
+            port: dbProperties.database[dbProperties.database.client].port,
+            user: dbProperties.database[dbProperties.database.client].user,
+            password: dbProperties.database[dbProperties.database.client].password,
+            database: dbProperties.database[dbProperties.database.client].database,
+            debug: dbProperties.database[dbProperties.database.client].debug
+        }
+    });
+//}
+console.log(knex);
 
 function closeDb(){
     knex.destroy();

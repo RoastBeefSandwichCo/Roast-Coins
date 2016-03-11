@@ -27,13 +27,12 @@
             "ssl": null
         },
         "postgresql": {
-            "database_url":"#BROKENSHITmysql://roast_coins:roast_coins@localhost/roast_coins?debug=true",
+            "database_url":"postgres://roast_coins:password12345@localhost/roast_coins?debug=true",
             "host": "localhost",
             "port": 5432,
             "user": "roast_coins",
-            "password": "-Qe6lxHfX4uGBq43EE-f",
+            "password": "password12345",
             "database": "roast_coins",
-            "debug": true,
             "ssl": null
         },
         "sqlite": "to be implemented"
