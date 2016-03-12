@@ -5,23 +5,24 @@ var dbProperties = require('../config/config.json');
 require ('pg');
 */
 //var knex = null;
-    var knex = require('knex')({
-        client: dbProperties.database.client.toLowerCase(),
-        connection: {
-            host: dbProperties.database[dbProperties.database.client].host,
-            port: dbProperties.database[dbProperties.database.client].port,
-            user: dbProperties.database[dbProperties.database.client].user,
-            password: dbProperties.database[dbProperties.database.client].password,
-            database: dbProperties.database[dbProperties.database.client].database,
-            debug: dbProperties.database[dbProperties.database.client].debug
-        }
-    });
-//}
+var knex = require('knex')({
+    client: dbProperties.database.client.toLowerCase(),
+    connection: {
+        host: dbProperties.database[dbProperties.database.client].host,
+        port: dbProperties.database[dbProperties.database.client].port,
+        user: dbProperties.database[dbProperties.database.client].user,
+        password: dbProperties.database[dbProperties.database.client].password,
+        database: dbProperties.database[dbProperties.database.client].database,
+        debug: dbProperties.database[dbProperties.database.client].debug
+    }
+});
 console.log(knex);
+//#FIXME: frikkin thing.. winston, output, fix.
 
 function closeDb(){
     knex.destroy();
 }
+
 function dbCallback(results, results2, fields){ //suspect first field can be returned value or error. #TODO: parse appropriately
     if (results) {
         console.log('========MYSQL RESULTS:', results);
@@ -213,14 +214,17 @@ if (process.argv.length > 2) {
         createTablesAll();
     }
 }
-function main() {
+function main(logger) { //testing export tricks
+    this.logger = logger;
+    database: knex;
+    //knex();
     closeDb: this.closeDb;
     getExternalAddress: this.getExternalAddress;
     getLastBlockChecked: this.getLastBlockChecked;
     recordLastBlockChecked: this.recordLastBlockChecked;
     recordNewAddressRelationship: this.recordNewAddressRelationship;
     recordTransaction: this.recordTransaction;
-    database: this.knex;
+    
 }
 
 
@@ -231,16 +235,11 @@ module.exports = {
     "recordLastBlockChecked": recordLastBlockChecked,
     "recordNewAddressRelationship": recordNewAddressRelationship,
     "recordTransaction": recordTransaction,
-    "database": knex,
-    "db_test": main
+//    "database": knexDb(),
+    "main": main
 };
 
 
 //#TODO: all create functions should return values
 //#TODO: #FIXME: closDb at the end of functions is bullshit. fixit.
 //#TODO: make this WAY more efficient.
-//TODO: ADD TO DOC:
-//'mysql -u root -p -e "CREATE USER 'test' IDENTIFIED BY 'test';"
-//CREATE DATABASE IF NOT EXISTS roast_coins //do not do this programatically. roast_coins does not need that level of privilege.
-//
-//#lots of code from https://github.com/felixge/node-mysql
