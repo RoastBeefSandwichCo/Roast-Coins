@@ -4,6 +4,7 @@ var dbProperties = require('../config/config.json');
 /*if (dbProperties.database.client.toLowerCase() === 'postgresql'){
 require ('pg');
 */
+//var knex = null;
     var knex = require('knex')({
         client: dbProperties.database.client.toLowerCase(),
         connection: {
@@ -212,6 +213,15 @@ if (process.argv.length > 2) {
         createTablesAll();
     }
 }
+function main() {
+    closeDb: this.closeDb;
+    getExternalAddress: this.getExternalAddress;
+    getLastBlockChecked: this.getLastBlockChecked;
+    recordLastBlockChecked: this.recordLastBlockChecked;
+    recordNewAddressRelationship: this.recordNewAddressRelationship;
+    recordTransaction: this.recordTransaction;
+    database: this.knex;
+}
 
 
 module.exports = {
@@ -221,7 +231,8 @@ module.exports = {
     "recordLastBlockChecked": recordLastBlockChecked,
     "recordNewAddressRelationship": recordNewAddressRelationship,
     "recordTransaction": recordTransaction,
-    "database": knex
+    "database": knex,
+    "db_test": main
 };
 
 
