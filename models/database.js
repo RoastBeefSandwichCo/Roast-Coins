@@ -2,13 +2,7 @@
 var dbProperties = require('../config/config.json');
 //require('mysql');
 /*if (dbProperties.database.client.toLowerCase() === 'postgresql'){
-    var knex = require('knex')({
-        client: 'pg',
-        connection: dbProperties.database[dbProperties.database.client].database_url,
-        searchPath: 'knex,public'
-    });	
-}
-else{
+require ('pg');
 */
     var knex = require('knex')({
         client: dbProperties.database.client.toLowerCase(),
@@ -128,7 +122,10 @@ function createTableLastBlockIndex(){ //tracks the last block for which we have 
 }
 
 function getLastBlockChecked(cryptoSymbol, callback) {
-    var last_checked = knex.select('block_hash').from('last_block_index').where('crypto_symbol', cryptoSymbol)
+    var last_checked = knex
+    .select('block_hash')
+    .from('last_block_index')
+    .where('crypto_symbol', cryptoSymbol)
     .orderBy('id', 'desc')
     .limit(1)
     .then(callback);
@@ -137,11 +134,41 @@ function getLastBlockChecked(cryptoSymbol, callback) {
 }
 
 var getExternalAddress = function(cryptoAddress){
-    var externalAddress = knex.select('external_address').from('coin_index').where('crypto_address', cryptoAddress).limit(1);
+    var externalAddress = knex
+    .select('external_address')
+    .from('coin_index')
+    .where('crypto_address', cryptoAddress)
+    .limit(1);
     //console.log('address pair:', cryptoAddress, externalAddress);
     return externalAddress;
-    
 }
+
+var getPendingWithdrawals = function(intLimit){
+    var pendingWithdrawals = knex
+    .select('external_address')
+    .from('blockchain_transactions')
+    .where({'pending': 1, 'inbound': 0})
+    .whereNull('txid')
+    .limit(intLimit)
+    .then(callback);
+};
+
+var markAsNotPending = function(rowId){
+    knex('blockchain_transactions').where('id', '=', rowId)
+    .update({
+    'pending': false
+    })
+};
+
+var recordWithdrawalTXID = function(rowId, txid){
+    knex('blockchain_transactions').where('id', '=', rowId)
+    .update({
+    'txid': txid
+    })
+    
+
+};
+
 var recordLastBlockChecked = function (blockInfoObject){
     console.log('Inserting record into last_block_index');
 //    var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "block_hash": blockHash}
@@ -152,7 +179,7 @@ var recordLastBlockChecked = function (blockInfoObject){
         closeDb();});
     return;
     
-}
+};
 
 var recordTransaction = function(transactionObject){
     //console.log('Inserting transaction into blockchain_transactions:', transactionObject);
