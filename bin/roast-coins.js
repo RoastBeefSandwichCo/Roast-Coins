@@ -20,17 +20,20 @@ var logger = new winston.Logger({
     ]
 })
 
-var database = require('../models/database.js').main(logger); //all our abstractions
+var database = require('../models/database.js').main(logger); //all our abstractions //#TODO:FIXME: CATCH DATABASE FAILURE
+logger.silly(database);
 
 function main() {
     logger.log('info', 'main started');
-    logger.log('verbose', 'getting pool');
+    logger.log('verbose', 'getting daemon pool');
     var coinDaemonPool = coinDaemons.getDaemonPool(logger);
 //    logger.log('verbose', 'starting withdrawal manager, interval: %i', withdrawalPollingInterval);
     logger.log('verbose', 'NOT starting withdrawal manager, interval: %j sec', withdrawalPollingInterval);
 //    var withdrawalManager = setInterval(handlePendingWithdrawals, withdrawalPollingInterval * 1000);
-    logger.log('verbose', 'starting deposit manager (api), interval: '+ '');
-    var depositManager = api.start(database, coinDaemonPool, logger);
+    logger.log('verbose', 'starting deposit manager (api)');
+    logger.debug('database', database);
+    var depositManager = new api.api(coinDaemonPool, database, logger);
+    depositManager.start();
 }
 
 main();

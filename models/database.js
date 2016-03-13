@@ -4,7 +4,7 @@ var dbProperties = require('../config/config.json');
 /*if (dbProperties.database.client.toLowerCase() === 'postgresql'){
 require ('pg');
 */
-//var knex = null;
+var knex = null;
 var knex = require('knex')({
     client: dbProperties.database.client.toLowerCase(),
     connection: {
@@ -16,7 +16,7 @@ var knex = require('knex')({
         debug: dbProperties.database[dbProperties.database.client].debug
     }
 });
-console.log(knex);
+//console.log(knex);
 //#FIXME: frikkin thing.. winston, output, fix.
 
 function closeDb(){
