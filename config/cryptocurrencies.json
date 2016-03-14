@@ -29,13 +29,13 @@
             "maxdailypaymenttotal" : 2,
             "minimumconfirmations": 5
     },
-    "PHC" : {
-            "coindaemon" : "phcoind",
-            "sendfrom" : "PG9J1iziEyg6f8TW53oJU3NEC68H2aJ4BW",
-            "host" : "68.225.165.227",
-            "rpcusername" : "phcDevUsr",
-            "rpcpassword" : "ACoDrcojLGbAHFnbDGCi3KB5nhBpBbkurnW2W3jNNQTN",
-            "port" : 18694,
+    "DASH" : {
+            "coindaemon" : "dashd",
+            "sendfrom" : "Xc2z1kWVVhwzJnCdLTeFQcBGYwQYuhudrt",
+            "host" : "localhost",
+            "rpcusername" : "dashrpc",
+            "rpcpassword" : "D9pZYfeYJNonbUtktq6JtDCW44xK8tuEemHNDE5SsfN6",
+            "port" : 9998 ,
             "maxdailypaymenttotal" : 2,
             "minimumconfirmations": 5
     },
