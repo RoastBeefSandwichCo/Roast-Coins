@@ -144,14 +144,15 @@ function rcDatabase(logger) {
         return externalAddress;
     }
     
-    this.getPendingWithdrawals = function(intLimit){
+    this.getPendingWithdrawals = function(intLimit, callback){
         var pendingWithdrawals = knex
-        .select('external_address')
+        .select('id', 'external_address', 'bc_dest', 'bc_amount', 'bc_commentTo')
         .from('blockchain_transactions')
         .where({'pending': 1, 'inbound': 0})
         .whereNull('txid')
         .limit(intLimit)
-        .then(callback);
+        //.then(callback);//try with promise first
+        return pendingWithdrawals;
     };
     
     this.markAsNotPending = function(rowId){

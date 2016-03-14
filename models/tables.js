@@ -89,6 +89,9 @@ var createTableExternalTransactions = function() {  //records blockchain transac
         table.decimal('bc_amount');
         table.integer('bc_blockindex');
         table.integer('bc_blocktime');
+        table.string('bc_commentTo');
+        tabl.string('bc_dest');
+//        table.string('bc_origin'); unnecessary. for deposits, might be multiple. for withdrawals, is crypto_address.
         table.integer('bc_time');
         table.integer('bc_timereceived');
         table.string('bc_txid');
