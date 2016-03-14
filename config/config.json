@@ -31,8 +31,9 @@
             "host": "localhost",
             "port": 5432,
             "user": "roast_coins",
-            "password": "password12345",
+            "password": "Oon0sd6p5_GdURwqc2u2",
             "database": "roast_coins",
+            "debug": true,
             "ssl": null
         },
         "sqlite": "to be implemented"

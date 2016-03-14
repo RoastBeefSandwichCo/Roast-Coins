@@ -217,6 +217,7 @@ if (process.argv.length > 2) {
 function main(logger) { //testing export tricks
     this.logger = logger;
     database: knex;
+console.log(knex);
     //knex();
     closeDb: this.closeDb;
     getExternalAddress: this.getExternalAddress;
@@ -224,7 +225,7 @@ function main(logger) { //testing export tricks
     recordLastBlockChecked: this.recordLastBlockChecked;
     recordNewAddressRelationship: this.recordNewAddressRelationship;
     recordTransaction: this.recordTransaction;
-    
+   return this;
 }
 
 
