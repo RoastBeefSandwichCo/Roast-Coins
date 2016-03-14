@@ -1,9 +1,11 @@
 "use strict";
+//#TODO: remove table creation funcs
 var dbProperties = require('../config/config.json');
 //require('mysql');
 /*if (dbProperties.database.client.toLowerCase() === 'postgresql'){
 require ('pg');
 */
+var logPrefix = 'database: ';
 var knex = null;
 var knex = require('knex')({
     client: dbProperties.database.client.toLowerCase(),
@@ -19,34 +21,33 @@ var knex = require('knex')({
 //console.log(knex);
 //#FIXME: frikkin thing.. winston, output, fix.
 
-function rcDatabase(logger) { //testing export tricks
+function rcDatabase(logger) { 
     this.logger = logger;
     this.database = knex;
     //console.log(knex);
-    return;
 
-
-    closeDb = function(){
+    this.closeDb = function(){
         knex.destroy();
     }
     
-    dbCallback = function(results, results2, fields){ //suspect first field can be returned value or error. #TODO: parse appropriately
+//logger.debug('CLOSEDB?'+ closeDb); okay so methods are there.
+    this.dbCallback = function(results, results2, fields){ //suspect first field can be returned value or error. #TODO: parse appropriately
         if (results) {
-            console.log('========MYSQL RESULTS:', results);
+            logger.debug(logPrefix + '========MYSQL RESULTS:' + results);
              return results;
          }
         if (results) {
-            console.log('========RESULTS2:', results2);
+            logger.debug(logPrefix + '========RESULTS2:' + results2);
         }
         if (fields) {
-            console.log('\n========FIELDS:', fields);
+            logger.debug('\n' + logPrefix + '========FIELDS:' + fields);
         }
         console.log('nah im here');
         console.log(results, results2, fields)
         return promise;
     }
     
-    createTablesAll = function() {
+    this.createTablesAll = function() {
         //call all creation functions here
         //build a list of their results, return list.
     /*    createTableCoinIndex()
@@ -68,7 +69,7 @@ function rcDatabase(logger) { //testing export tricks
         });
     }
     
-    createTableCoinIndex = function(){
+    this.createTableCoinIndex = function(){
         var x = knex.schema.createTableIfNotExists('coin_index', function (table) {
             table.increments();
             table.integer('timestamp');
@@ -86,7 +87,7 @@ function rcDatabase(logger) { //testing export tricks
         return x;
     };
     
-    createTableExternalTransactions = function() {  //records blockchain transaction info and associated external address
+    this.createTableExternalTransactions = function() {  //records blockchain transaction info and associated external address
         var x = knex.schema.createTableIfNotExists('blockchain_transactions', function (table) {
             table.increments();
             table.string('crypto_address');
@@ -106,14 +107,9 @@ function rcDatabase(logger) { //testing export tricks
             console.log('error in knex table creation: blockchain_transactions');
             })
         return x;
-        /*.then(function(result){
-            //console.log('creationResult:', result);
-            return result;
-        });*/
-        //varchar 255 string external_address, bool? direction, bool? finished(edited)
     }
     
-    createTableLastBlockIndex = function(){ //tracks the last block for which we have processed all transactions #TODO: what happens when they're
+    this.createTableLastBlockIndex = function(){ //tracks the last block for which we have processed all transactions #TODO: what happens when they're
         //partially processed?
         var x = knex.schema.createTableIfNotExists('last_block_index', function (table) {
             table.increments();
@@ -124,13 +120,9 @@ function rcDatabase(logger) { //testing export tricks
             console.log('error in knex table creation: last_block_index');
             });
         return x;
-        /*.then(function(result){
-            //console.log('creationResult:', result);
-            return result;
-        });*/
     }
     
-    getLastBlockChecked = function(cryptoSymbol, callback) {
+   this.getLastBlockChecked = function(cryptoSymbol, callback) {
         var last_checked = knex
         .select('block_hash')
         .from('last_block_index')
@@ -142,7 +134,7 @@ function rcDatabase(logger) { //testing export tricks
         return last_checked;
     }
     
-    getExternalAddress = function(cryptoAddress){
+    this.getExternalAddress = function(cryptoAddress){
         var externalAddress = knex
         .select('external_address')
         .from('coin_index')
@@ -152,7 +144,7 @@ function rcDatabase(logger) { //testing export tricks
         return externalAddress;
     }
     
-    getPendingWithdrawals = function(intLimit){
+    this.getPendingWithdrawals = function(intLimit){
         var pendingWithdrawals = knex
         .select('external_address')
         .from('blockchain_transactions')
@@ -162,14 +154,14 @@ function rcDatabase(logger) { //testing export tricks
         .then(callback);
     };
     
-    markAsNotPending = function(rowId){
+    this.markAsNotPending = function(rowId){
         knex('blockchain_transactions').where('id', '=', rowId)
         .update({
         'pending': false
         })
     };
     
-    recordWithdrawalTXID = function(rowId, txid){
+    this.recordWithdrawalTXID = function(rowId, txid){
         knex('blockchain_transactions').where('id', '=', rowId)
         .update({
         'txid': txid
@@ -178,19 +170,20 @@ function rcDatabase(logger) { //testing export tricks
     
     };
     
-    recordLastBlockChecked = function (blockInfoObject){
+    this.recordLastBlockChecked = function (blockInfoObject){
         console.log('Inserting record into last_block_index');
     //    var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "block_hash": blockHash}
-        var knexInsert = knex('last_block_index').insert(blockInfoObject).then(dbCallback)
+        var knexInsert = knex('last_block_index').insert(blockInfoObject).then(this.dbCallback)
         .then(function(lastAffectedRow){
             console.log('lastAffectedRow', lastAffectedRow);
             //return true;
-            closeDb();});
+//            closeDb();
+            });
         return;
         
     };
     
-    recordTransaction = function(transactionObject){
+    this.recordTransaction = function(transactionObject){
         //console.log('Inserting transaction into blockchain_transactions:', transactionObject);
         var knexInsert = knex('blockchain_transactions').insert(transactionObject).then(dbCallback)
         .then(function(output){
@@ -200,7 +193,7 @@ function rcDatabase(logger) { //testing export tricks
         return knexInsert;
     };
     
-    recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp, callback){
+    this.recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp, callback){
     //comment out, test, remove    var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
       //  var db = mysqlConnection();
         var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
