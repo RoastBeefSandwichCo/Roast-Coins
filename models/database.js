@@ -74,7 +74,7 @@ function rcDatabase(logger) {
             table.increments();
             table.integer('timestamp');
             table.string('crypto_symbol');
-            table.string('crypto_address');
+            table.string('bc_address');
             table.string('external_address');
         }).catch(function(error){
             console.log('error in knex table creation: coin_index');
@@ -90,7 +90,7 @@ function rcDatabase(logger) {
     this.createTableExternalTransactions = function() {  //records blockchain transaction info and associated external address
         var x = knex.schema.createTableIfNotExists('blockchain_transactions', function (table) {
             table.increments();
-            table.string('crypto_address');
+            table.string('bc_address');
             table.string('crypto_symbol');
             table.string('external_address');
             table.boolean('finished');  // Finished = 0 = False = Pending.
@@ -138,7 +138,7 @@ function rcDatabase(logger) {
         var externalAddress = knex
         .select('external_address')
         .from('coin_index')
-        .where('crypto_address', cryptoAddress)
+        .where('bc_address', cryptoAddress)
         .limit(1);
         //console.log('address pair:', cryptoAddress, externalAddress);
         return externalAddress;
@@ -195,9 +195,9 @@ function rcDatabase(logger) {
     };
     
     this.recordNewAddressRelationship = function( cryptoAddress, cryptoSymbol, externalAccount, timestamp, callback){
-    //comment out, test, remove    var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount};
+    //comment out, test, remove    var post =  {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "bc_address": cryptoAddress, "external_address": externalAccount};
       //  var db = mysqlConnection();
-        var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "crypto_address": cryptoAddress, "external_address": externalAccount}
+        var knexString = {"timestamp": timestamp, "crypto_symbol": cryptoSymbol, "bc_address": cryptoAddress, "external_address": externalAccount}
         var knexInsert = knex('coin_index').insert(knexString).then(dbCallback)
         .then(function(lastAffectedRow){
             console.log('lastAffectedRow', lastAffectedRow);
