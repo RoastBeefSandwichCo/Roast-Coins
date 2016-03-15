@@ -87,28 +87,6 @@ function rcDatabase(logger) {
         return x;
     };
     
-    this.createTableExternalTransactions = function() {  //records blockchain transaction info and associated external address
-        var x = knex.schema.createTableIfNotExists('blockchain_transactions', function (table) {
-            table.increments();
-            table.string('bc_address');
-            table.string('crypto_symbol');
-            table.string('external_address');
-            table.boolean('finished');  // Finished = 0 = False = Pending.
-            table.boolean('is_inbound');  //0 = false = outbound
-            table.integer('rc_timestamp'); //When the block notification was received by Roast Coins
-            table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
-            table.string('bc_amount')//decimal provides the right precision in theory but in practice small nums become .00
-            table.integer('bc_blockindex');
-            table.integer('bc_blocktime');
-            table.integer('bc_time');
-            table.integer('bc_timereceived');
-            table.string('bc_txid');
-        }).catch(function(error){
-            console.log('error in knex table creation: blockchain_transactions');
-            })
-        return x;
-    }
-    
     this.createTableLastBlockIndex = function(){ //tracks the last block for which we have processed all transactions #TODO: what happens when they're
         //partially processed?
         var x = knex.schema.createTableIfNotExists('last_block_index', function (table) {
