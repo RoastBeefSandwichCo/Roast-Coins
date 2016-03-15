@@ -63,7 +63,7 @@ var createTableCoinIndex = function(){
         table.increments();
         table.integer('timestamp');
         table.string('crypto_symbol');
-        table.string('crypto_address');
+        table.string('bc_address');
         table.string('external_address');
     }).catch(function(error){
         console.log('error in knex table creation: coin_index');
@@ -79,7 +79,7 @@ var createTableCoinIndex = function(){
 var createTableExternalTransactions = function() {  //records blockchain transaction info and associated external address
     var x = knex.schema.createTableIfNotExists('blockchain_transactions', function (table) {
         table.increments();
-        table.string('crypto_address');
+        table.string('bc_address');
         table.string('crypto_symbol');
         table.string('external_address');
         table.boolean('finished');  // Finished = 0 = False = Pending.
@@ -91,7 +91,7 @@ var createTableExternalTransactions = function() {  //records blockchain transac
         table.integer('bc_blocktime');
         table.string('bc_commentTo');
         table.string('bc_dest');
-//        table.string('bc_origin'); unnecessary. for deposits, might be multiple. for withdrawals, is crypto_address.
+//        table.string('bc_origin'); unnecessary. for deposits, might be multiple. for withdrawals, is bc_address.
         table.integer('bc_time');
         table.integer('bc_timereceived');
         table.string('bc_txid');
