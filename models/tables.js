@@ -84,7 +84,7 @@ var createTableExternalTransactions = function() {  //records blockchain transac
         table.string('bc_address');
         table.string('crypto_symbol');
         table.string('external_address');
-        table.boolean('finished');  // Finished = 0 = False = Pending.
+        table.boolean('is_finished');  // Finished = 0 = False = Pending.
         table.boolean('is_inbound');  //0 = false = outbound
         table.integer('rc_timestamp'); //When the block notification was received by Roast Coins
         table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
