@@ -186,7 +186,7 @@ function rcDatabase(logger) {
     
     this.recordTransaction = function(transactionObject){
         //console.log('Inserting transaction into blockchain_transactions:', transactionObject);
-        var knexInsert = knex('blockchain_transactions').insert(transactionObject).then(dbCallback)
+        var knexInsert = knex('blockchain_transactions').insert(transactionObject).then(this.dbCallback)
         .then(function(output){
             console.log('insertTx output:', output);
         });
