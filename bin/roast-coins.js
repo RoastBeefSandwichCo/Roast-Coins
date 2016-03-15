@@ -1,40 +1,41 @@
 const withdrawalPollingInterval = 10 // Multiplied by 1000 = poll db every x seconds
-
 var api = require ('../lib/api.js') //atm only provides new block notification (deposits)
 var coinDaemons = require('../lib/coin-daemons.js'); //daemon pool and methods
 var consoleDebugLevel = 'debug';
 var logfileDebugLevel = 'silly';
 var winston = require('winston');
-
-var logger = new winston.Logger({
-    transports: [
-        new winston.transports.Console({
-            level: consoleDebugLevel,
-            colorize: true
-        }),
-        new winston.transports.File ({
-            filename: 'rc_debug.log',
-            level: logfileDebugLevel,
-            json: true
-        })
-    ]
-})
-
 var databaseModule = require('../models/database.js'); //all our abstractions //#TODO:FIXME: CATCH DATABASE FAILURE
-var database  = new databaseModule.rcDatabase(logger)
-logger.silly(database);
+var withdrawalModule = require('../processes/withdrawals.js');
+const logPrefix = 'MAIN> '
 
 function main() {
-    logger.log('info', 'main started');
-    logger.log('verbose', 'getting daemon pool');
+    var logger = new winston.Logger({
+        transports: [
+            new winston.transports.Console({
+                level: consoleDebugLevel,
+                colorize: true
+            }),
+            new winston.transports.File ({
+                filename: 'rc_debug.log',
+                level: logfileDebugLevel,
+                json: true
+            })
+        ]
+    });
+    logger.silly(logPrefix + 'logger', logger);
+    logger.info(logPrefix + 'main process starting');
+    var database  = new databaseModule.rcDatabase(logger);
+    logger.silly(logPrefix + 'database' + database);
+    logger.info(logPrefix + 'connecting to database (async)');
+    logger.info(logPrefix + 'getting daemon pool');
     var coinDaemonPool = coinDaemons.getDaemonPool(logger);
-//    logger.log('verbose', 'starting withdrawal manager, interval: %i', withdrawalPollingInterval);
-    logger.log('verbose', 'NOT starting withdrawal manager, interval: %j sec', withdrawalPollingInterval);
+    logger.silly(logPrefix + coinDaemons);
+    logger.info(logPrefix + 'withdrawal manager is API only');
+    var withdrawalHandler = new withdrawalModule.handlePendingWithdrawals(coinDaemonPool, database, logger);
+    logger.silly(logPrefix + 'withdrawalHandler' + withdrawalHandler)
 //    var withdrawalManager = setInterval(handlePendingWithdrawals, withdrawalPollingInterval * 1000);
-    logger.log('verbose', 'starting deposit manager (api)');
-    //logger.debug('database', database);
-    var depositManager = new api.api(coinDaemonPool, database, logger);
-    depositManager.start();
+    var apiServer = new api.api(coinDaemonPool, database, logger, withdrawalHandler);  //controls deposits for now
+    apiServer.start();
 }
 
 main();
