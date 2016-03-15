@@ -134,10 +134,12 @@ function rcDatabase(logger) {
     };
     
     this.markAsFinished = function(rowId){
-        knex('blockchain_transactions').where('id', rowId)
-        .update({
-        'is_finished': true
-        })
+//console.log("ROWID:", rowId)
+        knex('blockchain_transactions')
+        .where('id', rowId)
+        .update( 'is_finished', 1 )
+        .then(function (stuff){console.log('stuff');});//does not work without a then! 
+//use the promise to catch failure in withdrawals.js
     };
     
     this.recordWithdrawalTXID = function(rowId, txid){

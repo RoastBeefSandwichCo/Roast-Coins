@@ -47,7 +47,7 @@ amount = Number(amount);
                 logger.debug(logPrefix + 'each: ' , pendingWithdrawals[each]);
                 var rowId = pendingWithdrawals[each].id;
                 logger.debug (logPrefix + 'marking ' + rowId + ' as not pending')
-                var catchMarkFailure = database.markAsNotPending(rowId); //prevent double-processing //#TODO: catch fail
+                var catchMarkFailure = database.markAsFinished(rowId); //prevent double-processing //#TODO: catch fail
                 logger.warn(logPrefix + 'you need to check catchMarkFailure!');
                 var txid = doWithdrawal(pendingWithdrawals[each].bc_amount, pendingWithdrawals[each].bc_commentTo, pendingWithdrawals[each].crypto_symbol, pendingWithdrawals[each].bc_dest, rowId);// #FIXME: ADD THESE FIELDS!
                 }
