@@ -158,7 +158,7 @@ function rcDatabase(logger) {
     this.markAsNotPending = function(rowId){
         knex('blockchain_transactions').where('id', '=', rowId)
         .update({
-        'pending': false
+        'is_finished': false
         })
     };
     
