@@ -88,7 +88,7 @@ var createTableExternalTransactions = function() {  //records blockchain transac
         table.boolean('is_inbound');  //0 = false = outbound
         table.integer('rc_timestamp'); //When the block notification was received by Roast Coins
         table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
-        table.decimal('bc_amount', 65, 30);
+        table.decimal('bc_amount', 65, 8);
         table.integer('bc_blockindex');
         table.integer('bc_blocktime');
         table.string('bc_commentTo');

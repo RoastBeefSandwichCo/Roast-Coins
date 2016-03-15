@@ -146,10 +146,10 @@ function rcDatabase(logger) {
     
     this.getPendingWithdrawals = function(intLimit, callback){
         var pendingWithdrawals = knex
-        .select('id', 'external_address', 'bc_dest', 'bc_amount', 'bc_commentTo')
+        .select('id', 'external_address', 'crypto_symbol', 'bc_dest', 'bc_amount', 'bc_commentTo')
         .from('blockchain_transactions')
-        .where({'pending': 1, 'inbound': 0})
-        .whereNull('txid')
+        .where({'finished': 0, 'is_inbound': 0})
+        .whereNull('bc_txid')
         .limit(intLimit)
         //.then(callback);//try with promise first
         return pendingWithdrawals;

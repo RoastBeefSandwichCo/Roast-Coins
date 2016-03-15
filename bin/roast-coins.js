@@ -31,7 +31,7 @@ function main() {
     var coinDaemonPool = coinDaemons.getDaemonPool(logger);
     logger.silly(logPrefix + coinDaemons);
     logger.info(logPrefix + 'withdrawal manager is API only');
-    var withdrawalHandler = new withdrawalModule.handlePendingWithdrawals(coinDaemonPool, database, logger);
+    var withdrawalHandler = new withdrawalModule.withdrawalHandler(coinDaemonPool, database, logger);
     logger.silly(logPrefix + 'withdrawalHandler' + withdrawalHandler)
 //    var withdrawalManager = setInterval(handlePendingWithdrawals, withdrawalPollingInterval * 1000);
     var apiServer = new api.api(coinDaemonPool, database, logger, withdrawalHandler);  //controls deposits for now
