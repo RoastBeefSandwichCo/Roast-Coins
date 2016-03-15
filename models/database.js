@@ -148,7 +148,7 @@ function rcDatabase(logger) {
         var pendingWithdrawals = knex
         .select('id', 'external_address', 'crypto_symbol', 'bc_dest', 'bc_amount', 'bc_commentTo')
         .from('blockchain_transactions')
-        .where({'finished': 0, 'is_inbound': 0})
+        .where({'is_finished': 0, 'is_inbound': 0})
         .whereNull('bc_txid')
         .limit(intLimit)
         //.then(callback);//try with promise first
@@ -156,14 +156,14 @@ function rcDatabase(logger) {
     };
     
     this.markAsNotPending = function(rowId){
-        knex('blockchain_transactions').where('id', '=', rowId)
+        knex('blockchain_transactions').where('id', rowId)
         .update({
         'is_finished': false
         })
     };
     
     this.recordWithdrawalTXID = function(rowId, txid){
-        knex('blockchain_transactions').where('id', '=', rowId)
+        knex('blockchain_transactions').where('id', rowId)
         .update({
         'txid': txid
         })
