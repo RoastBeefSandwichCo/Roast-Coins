@@ -59,6 +59,7 @@ var createTablesAll = function() {
 }
 
 var createTableCoinIndex = function(){
+    console.log('coin_index');
     var x = knex.schema.createTableIfNotExists('coin_index', function (table) {
         table.increments();
         table.integer('timestamp');
@@ -77,6 +78,7 @@ var createTableCoinIndex = function(){
 };
 
 var createTableExternalTransactions = function() {  //records blockchain transaction info and associated external address
+    console.log('blockchain_transactions');
     var x = knex.schema.createTableIfNotExists('blockchain_transactions', function (table) {
         table.increments();
         table.string('bc_address');
@@ -109,6 +111,7 @@ var createTableExternalTransactions = function() {  //records blockchain transac
 
 var createTableLastBlockIndex = function(){ //tracks the last block for which we have processed all transactions #TODO: what happens when they're
     //partially processed?
+    console.log('last_block_index');
     var x = knex.schema.createTableIfNotExists('last_block_index', function (table) {
         table.increments();
         table.integer('timestamp');
@@ -127,7 +130,7 @@ var createTableLastBlockIndex = function(){ //tracks the last block for which we
 //#TODO: detect cli invocation for easy table creation
 if (process.argv.length > 2) {
     if (process.argv[2] == 'createTables') {
-        console.log('CLI invocation. Creating address table.');
+        console.log('CLI invocation. Creating tables.');
         createTablesAll();
     }
 }

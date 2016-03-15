@@ -97,7 +97,7 @@ function rcDatabase(logger) {
             table.boolean('is_inbound');  //0 = false = outbound
             table.integer('rc_timestamp'); //When the block notification was received by Roast Coins
             table.string('bc_blockhash'); /*fields by rpc-reported name from blockchain client*/
-            table.decimal('bc_amount');
+            table.string('bc_amount')//decimal provides the right precision in theory but in practice small nums become .00
             table.integer('bc_blockindex');
             table.integer('bc_blocktime');
             table.integer('bc_time');
