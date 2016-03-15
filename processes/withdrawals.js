@@ -21,7 +21,8 @@ function withdrawalHandler(coinDaemonPool, database, logger) {
     }
     
     var doWithdrawal = function(amount, commentTo, cryptoSymbol, destination, rowId){
-
+//amount = amount.replace("',").replace('",');
+amount = Number(amount);
         coinDaemonPool[cryptoSymbol].sendToAddress(destination, amount, function(err, txid, resHeaders){
 //console.log(logPrefix + 'errors:' + err + '\nresHeaders' + resHeaders + '\ntxid:' + txid);
 //                amount = Number (amount);
