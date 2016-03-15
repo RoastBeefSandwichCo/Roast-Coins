@@ -51,12 +51,12 @@
     },
     "BERN" : {
              "coindaemon": "BERNcashd",
-             "sendfrom": "BMShVhSFimfHVv4zQbRm58XYN6wJkYdFdx",
+             "sendfrom": "BDy4PVjsGMg5yC5EFojtp9VfMkgyjyrAwE",
              "host" : "localhost",
              "rpcusername" : "bitcoinrpc",
              "rpcpassword" : "6bFgL4kRyf6ZgL5ohoJhH79YRDfcrBs18F1pEH6mLt49",
-             "port" : 42016,
+             "port" : 32016,
              "maxdailypaymenttotal" : 2,
-             "minimumconfirmations" : 7
+             "minimumconfirmations" : 5
     }
 }
