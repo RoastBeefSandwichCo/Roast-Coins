@@ -10,7 +10,7 @@ function withdrawalHandler(coinDaemonPool, database, logger) {
     this.coinDaemonPool = coinDaemonPool;
     this.logger = logger;
 
-    this.handlePendingWithdrawals = function(){ //read database, send transactions, mark done
+    this.selectPendingWithdrawals = function(){ //read database, send transactions, mark done
         database.getPendingWithdrawals(dbSelectLimit)
         .then(function(pendingWithdrawals){ //grab dbSelectLimit number of pending withdrawals
             logger.debug(logPrefix + 'pendingWithdrawals: ' + pendingWithdrawals);
@@ -19,7 +19,7 @@ function withdrawalHandler(coinDaemonPool, database, logger) {
                 logger.debug (logPrefix + 'marking ' + rowId + 'as not pending')
                 catchMarkFailure = database.markAsNotPending(rowId); //prevent double-processing //#TODO: catch fail
                 logger.warn(logPrefix + 'you need to check catchMarkFailure!');
-                txid = this.sendTx(rowId, pendingWithdrawals[each].bc_dest, pendingWithdrawals[each].bc_amount, pendingWithdrawals[each].bc_commentTo);// #FIXME: ADD THESE FIELDS!
+                txid = this.doWithdrawal(rowId, pendingWithdrawals[each].bc_dest, pendingWithdrawals[each].bc_amount, pendingWithdrawals[each].bc_commentTo);// #FIXME: ADD THESE FIELDS!
                 }
             }
         );
@@ -27,10 +27,11 @@ function withdrawalHandler(coinDaemonPool, database, logger) {
 
     this.markAsDone = function(rowId, txId){  //the authoritative "finished" marker, write the txid    
         if (txid != somekindoferror) {
-        database.recordWithdrawalTXID(rowId, txid); 
+            database.recordWithdrawalTXID(rowId, txid); 
+        }
     }
     
-    this.sendTx = function(rowId, destination, amount, commentTo){
+    this.doWithdrawal = function(rowId, destination, amount, commentTo){
         coinDaemonPool[cryptoSymbol].sendToAddress(destination, amount, commentTo), function(err, txid, resHeaders){
                 console.log(logPrefix, 'errors:', err, '\nresHeaders', resHeaders, '\ntxid:', txid);
                 if (txid != undefined){
@@ -41,7 +42,7 @@ function withdrawalHandler(coinDaemonPool, database, logger) {
                     logger.error(logPrefix, 'sendTx: TRANSACTION FAILED!');// shit ten bricks
                     return false;
                 }
-            };
+        };
     }
 }
 module.exports ={
