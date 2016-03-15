@@ -133,10 +133,10 @@ function rcDatabase(logger) {
         return pendingWithdrawals;
     };
     
-    this.markAsNotPending = function(rowId){
+    this.markAsfinished = function(rowId){
         knex('blockchain_transactions').where('id', rowId)
         .update({
-        'is_finished': false
+        'is_finished': true
         })
     };
     
