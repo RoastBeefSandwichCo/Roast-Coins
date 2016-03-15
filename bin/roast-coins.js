@@ -3,7 +3,7 @@ const withdrawalPollingInterval = 10 // Multiplied by 1000 = poll db every x sec
 var api = require ('../lib/api.js') //atm only provides new block notification (deposits)
 var coinDaemons = require('../lib/coin-daemons.js'); //daemon pool and methods
 var consoleDebugLevel = 'debug';
-var logfileDebugLevel = 'debug';
+var logfileDebugLevel = 'silly';
 var winston = require('winston');
 
 var logger = new winston.Logger({
