@@ -11,9 +11,11 @@ function withdrawalHandler(coinDaemonPool, database, logger) {
     this.logger = logger;
 
     var markAsDone = function(rowId, txId){  //the authoritative "finished" marker, write the txid    
-        if (txid != somekindoferror) {
-            logger.info(rowId, txid);
-            database.recordWithdrawalTXID(rowId, txid); 
+        logger.info('marking '+ rowId + ' done');
+        logger.debug('rowId, txId', typeof rowId, rowId, typeof txId,  txId);
+        if (typeof txId === 'string') {
+            logger.info(rowId, txId);
+            database.recordWithdrawalTXID(rowId, txId); 
         }else{
             logger.info(logPrefix + 'something went very wrong');
             logger.info(txid);

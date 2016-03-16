@@ -138,15 +138,15 @@ function rcDatabase(logger) {
         knex('blockchain_transactions')
         .where('id', rowId)
         .update( 'is_finished', 1 )
-        .then(function (stuff){console.log('stuff');});//does not work without a then! 
+        .then(function(stuff){logger.debug('markAsFinished returns', stuff);});
 //use the promise to catch failure in withdrawals.js
     };
     
     this.recordWithdrawalTXID = function(rowId, txid){
         knex('blockchain_transactions').where('id', rowId)
         .update({
-        'txid': txid
-        })
+        'bc_txid': txid
+        }).then(function(stuff){logger.debug('recordWithdrawalTXID returns ', stuff);});
         
     
     };
